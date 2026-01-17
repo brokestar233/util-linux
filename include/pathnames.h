@@ -151,7 +151,7 @@
 
 #define _PATH_DEV_MEM		"/dev/mem"
 
-#define _PATH_DEV_LOOP		"/dev/loop"
+#define _PATH_DEV_LOOP		"/dev/block/loop"
 #define _PATH_DEV_LOOPCTL	"/dev/loop-control"
 
 /* udev paths */
