@@ -17,6 +17,26 @@
 #include "pidfd-utils.h"
 #include "statfs_magic.h"
 
+#ifdef __ANDROID__
+#ifndef __NR_pidfd_open
+    #if defined(__x86_64__)
+        #define __NR_pidfd_open 434
+    #elif defined(__i386__)
+        #define __NR_pidfd_open 434
+    #elif defined(__aarch64__)
+        #define __NR_pidfd_open 434
+    #elif defined(__arm__)
+        #define __NR_pidfd_open 434
+    #else
+        #warning "Unsupported architecture for pidfd_open"
+    #endif
+#endif
+
+static int pidfd_open(pid_t pid, unsigned int flags) {
+    return syscall(__NR_pidfd_open, pid, flags);
+}
+#endif
+
 /*
  * Returns 1, if the pidfd has the pidfs file system type, otherwise 0.
  */

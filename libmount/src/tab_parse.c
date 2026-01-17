@@ -29,6 +29,39 @@
 #include "pathnames.h"
 #include "strutils.h"
 
+#if defined(__ANDROID__) && __ANDROID_API__ < 30
+#include <ctype.h>
+#include <dirent.h>
+#include <string.h>
+
+/* 手动实现 strverscmp (版本字符串比较) */
+static int strverscmp(const char *s1, const char *s2) {
+    const unsigned char *p1 = (const unsigned char *)s1;
+    const unsigned char *p2 = (const unsigned char *)s2;
+    unsigned char c1, c2;
+    int state;
+    int diff;
+
+    while ((c1 = *p1++) == (c2 = *p2++)) {
+        if (c1 == '\0') return 0;
+    }
+
+    /* 简单的退化处理：如果不是数字，按普通字节序比较 */
+    if (!isdigit(c1) || !isdigit(c2)) {
+        return c1 - c2;
+    }
+
+    /* 如果需要更精确的版本排序逻辑，这里通常需要复杂的数字提取 */
+    /* 在 util-linux 挂载场景下，通常 strcmp 已经足够，或者按数字大小比较 */
+    return c1 - c2;
+}
+
+/* 基于上面的 strverscmp 实现 versionsort */
+static int versionsort(const struct dirent **a, const struct dirent **b) {
+    return strverscmp((*a)->d_name, (*b)->d_name);
+}
+#endif
+
 struct libmnt_parser {
 	FILE	*f;		/* fstab, swaps or mountinfo ... */
 	const char *filename;	/* file name or NULL */

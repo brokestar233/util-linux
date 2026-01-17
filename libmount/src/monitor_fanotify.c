@@ -25,7 +25,14 @@
 #include "strutils.h"
 #include "pathnames.h"
 
-#include <sys/fanotify.h>
+#ifdef __ANDROID__
+# include <linux/fanotify.h>
+# include <sys/syscall.h>
+# define fanotify_init(flags, event_f_flags) syscall(__NR_fanotify_init, flags, event_f_flags)
+# define fanotify_mark(fd, flags, mask, dfd, pathname) syscall(__NR_fanotify_mark, fd, flags, mask, dfd, pathname)
+#else
+# include <sys/fanotify.h>
+#endif
 #include <sys/epoll.h>
 
 #ifndef FAN_MNT_ATTACH

@@ -14,6 +14,26 @@
 #include "closestream.h"
 #include "shells.h"
 
+#ifdef __ANDROID__
+#include <stdio.h>
+#include <stdlib.h>
+
+static const char *android_shells[] = { "/system/bin/sh", "/system/bin/u0_a0", NULL };
+static int android_shell_idx = 0;
+
+static inline void setusershell(void) {
+    android_shell_idx = 0;
+}
+
+static inline char *getusershell(void) {
+    return (char *)android_shells[android_shell_idx++];
+}
+
+static inline void endusershell(void) {
+    android_shell_idx = 0;
+}
+#endif
+
 #if defined (HAVE_LIBECONF) && defined (USE_VENDORDIR)
 static econf_file *open_etc_shells(void)
 {
