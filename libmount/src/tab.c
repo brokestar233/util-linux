@@ -1948,7 +1948,7 @@ int __mnt_table_is_fs_mounted(struct libmnt_table *tb, struct libmnt_fs *fstab_f
 			int flags = 0;
 
 			if (!mnt_fs_get_srcpath(fs) ||
-			    !ul_startswith(mnt_fs_get_srcpath(fs), "/dev/loop"))
+			    !ul_startswith(mnt_fs_get_srcpath(fs), "/dev/block/loop"))
 				continue;	/* does not look like loopdev */
 
 			if (mnt_fs_get_option(fstab_fs, "offset", &val, &len) == 0) {

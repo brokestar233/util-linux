@@ -1737,7 +1737,7 @@ int loopcxt_find_unused(struct loopdev_cxt *lc)
 			rc = -errno;
 		if (rc >= 0) {
 			char name[16];
-			snprintf(name, sizeof(name), "loop%d", rc);
+			snprintf(name, sizeof(name), "block/loop%d", rc);
 
 			rc = loopiter_set_device(lc, name);
 		}

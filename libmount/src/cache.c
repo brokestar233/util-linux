@@ -762,7 +762,7 @@ char *mnt_pretty_path(const char *path, struct libmnt_cache *cache)
 	/* users assume backing file name rather than /dev/loopN in
 	 * output if the device has been initialized by mount(8).
 	 */
-	if (strncmp(pretty, "/dev/loop", 9) == 0) {
+	if (strncmp(pretty, "/dev/block/loop", 9) == 0) {
 		struct loopdev_cxt lc;
 
 		if (loopcxt_init(&lc, 0) || loopcxt_set_device(&lc, pretty))

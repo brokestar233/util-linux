@@ -105,7 +105,7 @@ is_mounted_same_loopfile(struct libmnt_context *cxt,
 
 		rc = 0;
 
-		if (strncmp(src, "/dev/loop", 9) == 0) {
+		if (strncmp(src, "/dev/block/loop", 9) == 0) {
 			rc = loopdev_is_used((char *) src, bf, offset, 0, LOOPDEV_FL_OFFSET);
 
 		} else if (opts && (flags & MNT_MS_LOOP) &&
